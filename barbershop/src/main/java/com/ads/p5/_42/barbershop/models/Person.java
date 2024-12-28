@@ -1,14 +1,11 @@
 package com.ads.p5._42.barbershop.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-public class User {
+public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -19,7 +16,20 @@ public class User {
     private String email;
     private String password;
 
-    public User() {}
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Appointment> appointments;
+
+    // Construtor sem a necessidade de appointments
+    public Person() {}
+
+    public Person(String password, String email, String type, String username, String name, UUID id) {
+        this.password = password;
+        this.email = email;
+        this.type = type;
+        this.username = username;
+        this.name = name;
+        this.id = id;
+    }
 
     public UUID getId() {
         return id;
@@ -67,5 +77,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
     }
 }
